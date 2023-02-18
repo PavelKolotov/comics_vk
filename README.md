@@ -22,6 +22,7 @@ ACCESS_TOKEN=
 
 ```
 GROUP_ID - ID вашей группы VK
+
 ACCESS_TOKEN - воспользуйтесь процедурой [Implicit Flow](https://vk.com/dev/implicit_flow_user) для 
 получения ключа доступа пользователя
 
