@@ -18,7 +18,7 @@ def get_wall_upload_server(vk_grup_id, vk_token):
 def upload_image(server_link):
     images = os.walk('images')
     for img in images:
-        img_name = img[2]
+        img_name = img[2][0]
 
         with open(f'images/{img_name}', 'rb') as file:
             url = server_link
@@ -27,6 +27,7 @@ def upload_image(server_link):
             }
             response = requests.post(url, files=files)
             response.raise_for_status()
+            os.remove(f'images/{img_name}')
             return response.json()
 
 
