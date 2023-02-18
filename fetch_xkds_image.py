@@ -39,4 +39,3 @@ def fetch_xkds_comics():
     download_img(img_link, img_path)
     return comment_comic
 
-# fetch_xkds_comics()
