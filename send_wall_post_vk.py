@@ -1,3 +1,4 @@
+import os
 import requests
 
 
@@ -15,7 +16,7 @@ def get_wall_upload_server(vk_group_id, vk_token):
 
 
 def upload_image(server_link, img_name):
-    with open(f'images/{img_name}', 'rb') as file:
+    with open(os.path.join('images', img_name), 'rb') as file:
         files = {'photo': file}
         url = server_link
         response = requests.post(url, files=files)
