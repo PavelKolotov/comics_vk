@@ -13,6 +13,7 @@ def download_img(img_url, images_path):
         file.write(response.content)
 
 
+
 def separate_extension(link):
     encoded_url = urllib.parse.unquote(link)
     parsed_url = urllib.parse.urlsplit(encoded_url)
