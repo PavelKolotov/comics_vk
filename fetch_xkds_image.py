@@ -4,11 +4,8 @@ import random
 import urllib.parse
 
 
-from pathlib import Path
-
 
 def download_img(img_url, images_path):
-    Path('images').mkdir(parents=True, exist_ok=True)
     response = requests.get(img_url)
     response.raise_for_status()
 
@@ -17,25 +14,20 @@ def download_img(img_url, images_path):
 
 
 def separate_extension(link):
-    url_encoding = urllib.parse.unquote(link)
-    url_parse = urllib.parse.urlsplit(url_encoding)
-    filename = os.path.split(url_parse.path)[1]
+    encoded_url = urllib.parse.unquote(link)
+    parsed_url = urllib.parse.urlsplit(encoded_url)
+    filename = os.path.split(parsed_url.path)[1]
     return filename
 
 
-def fetch_xkds_comics():
-    num = random.randint(1, 2739)
+def fetch_random_comic():
+    total_number_comics = 2739
+    num = random.randint(1, total_number_comics)
     if num == 404:
         num = 405
     url = f'https://xkcd.com/{num}/info.0.json'
     response = requests.get(url)
     response.raise_for_status()
+    return response.json()
 
-    comic_link = response.json()
-    img_link = comic_link['img']
-    comment_comic = comic_link['alt']
-    filename = separate_extension(img_link)
-    img_path = f'./images/{filename}'
-    download_img(img_link, img_path)
-    return comment_comic
 
