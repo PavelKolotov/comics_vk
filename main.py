@@ -1,3 +1,4 @@
+import os
 import shutil
 
 
@@ -16,31 +17,33 @@ def main():
     vk_group_id = env('VK_GROUP_ID')
     vk_token = env('VK_ACCESS_TOKEN')
 
-    comic_link = fetch_random_comic()
-    
-    img_link = comic_link['img']
-    comic_comment = comic_link['alt']
-    filename = separate_extension(img_link)
-    img_path = f'./images/{filename}'
+    try:
+        comic_link = fetch_random_comic()
 
-    download_img(img_link, img_path)
+        img_link = comic_link['img']
+        comic_comment = comic_link['alt']
+        filename = separate_extension(img_link)
+        img_path = os.path.join('.', 'images', filename)
 
-    server_link = get_wall_upload_server(vk_group_id, vk_token)
+        download_img(img_link, img_path)
 
-    img_link = upload_image(server_link, filename)
+        server_link = get_wall_upload_server(vk_group_id, vk_token)
 
-    photo_param = img_link['photo']
-    server_param = img_link['server']
-    hash_param = img_link['hash']
+        img_link = upload_image(server_link, filename)
 
-    photo_link = save_wall_photo(vk_group_id, vk_token, photo_param, server_param, hash_param)
+        photo_param = img_link['photo']
+        server_param = img_link['server']
+        hash_param = img_link['hash']
 
-    owner_id = photo_link['response'][0]['owner_id']
-    media_id = photo_link['response'][0]['id']
+        photo_link = save_wall_photo(vk_group_id, vk_token, photo_param, server_param, hash_param)
 
-    send_wall_post(vk_group_id, vk_token, owner_id, media_id, comic_comment)
+        owner_id = photo_link['response'][0]['owner_id']
+        media_id = photo_link['response'][0]['id']
 
-    shutil.rmtree('images')
+        send_wall_post(vk_group_id, vk_token, owner_id, media_id, comic_comment)
+
+    finally:
+        shutil.rmtree('images')
 
 
 if __name__ == '__main__':
